@@ -1,0 +1,65 @@
+<mk-box [isRemovable]="false">
+    <mk-box-header>
+        <div class="btn-toolbar">
+            <button class="btn btn-danger" (click)="delete()">删除报警日志</button>
+        </div>
+    </mk-box-header>
+    <mk-box-content>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr id="header">
+                        <th><input type="checkbox" [(ngModel)]="checked" (change)="selectAll()"></th>
+                        <th>日志ID</th>
+                        <th>设备ID</th>
+                        <th>设备信息</th>
+                        <th>创建时间</th>
+                        <th>警报等级</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="alarmLogs.length==0">
+                        <td colspan="7">没有找到相关信息...</td>
+                    </tr>
+                    <tr *ngFor="let alarmLog of alarmLogs">
+                        <td><input type="checkbox" [(ngModel)]="alarmLog.status" (change)="check(alarmLog.status)"></td>
+                        <td>{{alarmLog.id}}</td>
+                        <td>{{alarmLog.deviceId}}</td>
+                        <td>{{alarmLog.data}}</td>
+                        <td>{{alarmLog.createTime}}</td>
+                        <td>{{alarmLog.level}}</td>
+                        <td>
+                            <button class="btn btn-info btn-xs" (click)="openModal(template)">提交解决方案</button>
+                            <ng-template #template>
+                                <div class="modal-header">
+                                    <h4 class="modal-title pull-left">提交解决方案</h4>
+                                    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="input-handle-description">解决方案</label>
+                                        <textarea id="input-handle-description" class="form-control" rows="4" [(ngModel)]="alarmLog.handle"></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-primary" (click)="submit(alarmLog)">提交</button>
+                                </div>
+                            </ng-template>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="message">显示第 {{curRecordStart}} 到第 {{curRecordEnd}} 条记录，总共 {{totNum}} 条记录 每页显示 {{limit}} 条记录</div>
+        <ul class="pagination right">
+            <li class="previous"><a href="javascript:void(0)" (click)="goToPre()">&laquo;</a></li>
+            <li *ngFor="let page of pages">
+                <a href="javascript:void(0)" (click)="turnPage(page)">{{page}}</a>
+            </li>
+            <li class="next"><a href="javascript:void(0)" (click)="goToNext()">&raquo;</a></li>
+        </ul>
+    </mk-box-content>
+</mk-box>

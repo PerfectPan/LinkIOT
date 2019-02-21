@@ -1,0 +1,73 @@
+<button class="btn btn-success" (click)="openModalOuter(template)">编辑图像</button>
+<ng-template #template>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">添加传感器数据</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRefOuter.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div id="body" class="modal-body">
+        <form class="form-inline">
+            <div class="form-group">
+                <input type="text" [(ngModel)]="deviceName" placeholder="选择设备" class="form-control" readonly="readonly" [ngModelOptions]="{standalone: true}">
+                <button class="btn btn-success" (click)="openModal(template2)" style="margin-left:0.3em;">选择设备</button>
+                <ng-template #template2>
+                    <div class="modal-header">
+                        <h4 class="modal-title pull-left">选择设备</h4>
+                        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="device">
+                            <li *ngFor="let device of devices;" [class.selected]="device === selectedDevice" (click)="onSelect(device)">
+                                {{device.name}}
+                            </li>
+                        </ul>
+                        <div class="form-group turn"><input type="text" [(ngModel)]="curDevicePage" style="width: 3em;" [ngModelOptions]="{standalone: true}">/{{devicePage}} <button class="btn btn-primary" (click)="turnDevicePage()">跳转</button></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" (click)="closeDevice()">确定</button>
+                    </div>
+                </ng-template>
+            </div>
+            <div class="form-group">
+                <br><input [(ngModel)]="sensorName" placeholder="选择传感器" class="form-control" readonly="readonly" [ngModelOptions]="{standalone: true}">
+                <button class="btn btn-success" (click)="openModalSensor(template3)" style="margin-left:0.3em;">选择传感器</button>
+                <ng-template #template3>
+                    <div class="modal-header">
+                        <h4 class="modal-title pull-left">选择传感器</h4>
+                        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="device">
+                            <li *ngFor="let sensor of sensors;" [class.selected]="sensor === selectedSensor" (click)="onSelect2(sensor)">
+                                {{sensor.name}}
+                            </li>
+                            <div class="form-group turn"><input type="text" [(ngModel)]="curSensorPage" style="width: 3em;" [ngModelOptions]="{standalone: true}">/{{sensorPage}} <button class="btn btn-primary" (click)="turnSensorPage()">跳转</button></div>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" (click)="closeSensor()">确定</button>
+                    </div>
+                </ng-template>
+            </div><br>
+            <div class="form-group line">
+                <div *ngIf="sensorName!=''">
+                    <p id="dataTip">请选择数据范围:</p>
+                    <input type="text" [(ngModel)]="startData" class="form-control" style="width: 5em;text-align: right;" [ngModelOptions]="{standalone: true}">——<input type="text" [(ngModel)]="endData" class="form-control" style="width: 5em;text-align: right;"
+                        [ngModelOptions]="{standalone: true}">共计 {{totNum}} 条;
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" (click)="submit()">确定</button>
+    </div>
+</ng-template>
+<p *ngIf="flag===false" id="graphTip">当前无图像</p>
+<div echarts *ngIf="flag===true" [options]="options" class="demo-chart"></div>
+<div echarts *ngIf="flag===true" [options]="options2" class="demo-chart"></div>
+<button *ngIf="flag===true" type="button" class="btn btn-danger" style="float:right;" (click)="clear();">删除图像</button>

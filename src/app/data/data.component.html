@@ -1,0 +1,38 @@
+<mk-box [isRemovable]="false">
+  <mk-box-header></mk-box-header>
+  <mk-box-content>
+    <div class="col-lg-12">
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+          <tr>
+            <th><input type="checkbox"></th>
+            <th>数据</th>
+            <th>产生时间</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let single of data">
+            <td><input type="checkbox"></td>
+            <td>{{single.data}}</td>
+            <td>{{single.updateTime}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-lg-12">
+      <div class="form-inline">
+        <div class="form-group pull-right">
+          <input class="form-control" type="button" value="上一页" [disabled]="page==1" (click)="goto(page-1)">
+          <input class="form-control" style="width: 60px" type="text" [value]="page" #gotoPage>
+          <span>{{' /'+maxPage+' '}}</span>
+          <input class="form-control" type="button" value="前往" (click)="goto(gotoPage.value)">
+          <input class="form-control" type="button" value="下一页" (click)="goto(page+1)">
+        </div>
+      </div>
+    </div>
+  </mk-box-content>
+</mk-box>
+
+

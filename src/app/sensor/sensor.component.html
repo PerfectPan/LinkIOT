@@ -1,0 +1,85 @@
+<mk-box [isRemovable]="false">
+  <mk-box-header>
+    <div class="btn-toolbar">
+      <button class="btn btn-success" (click)="open()">添加传感器</button>
+      <button class="btn btn-danger" (click)="delete()">删除传感器</button>
+    </div>
+  </mk-box-header>
+  <mk-box-content>
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+        <tr id="header">
+          <th><input type="checkbox" [(ngModel)]="checked" (change)="selectAll()"></th>
+          <th>ID</th>
+          <th>传感器名称</th>
+          <th>所属设备</th>
+          <th>数据类型</th>
+          <th>更新时间</th>
+          <th>创建时间</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngIf="sensors.length==0">
+          <td colspan="8">没有找到相关信息...</td>
+        </tr>
+        <tr *ngFor="let sensor of sensors">
+          <td><input type="checkbox" [(ngModel)]="sensor.status" (change)="check(sensor.status)"></td>
+          <td>{{sensor.id}}</td>
+          <td>{{sensor.name}}</td>
+          <td>{{sensor.deviceId}}</td>
+          <td>{{sensor.realType}}</td>
+          <td>{{sensor.updateTime}}</td>
+          <td>{{sensor.createTime}}</td>
+          <td>
+            <div class="btn-toolbar" style="display: flex">
+              <button class="btn btn-info btn-xs" (click)="gotoData(sensor)">查看数据</button>
+              <button class="btn btn-success btn-xs" (click)="openModal(template)">编辑</button>
+              <ng-template #template>
+                <div class="modal-header">
+                  <h4 class="modal-title pull-left">编辑传感器</h4>
+                  <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="form-group">
+                    <label for="input-sensor-name">传感器名称</label>
+                    <input id="input-sensor-name" type="text" class="form-control" [(ngModel)]="sensor.name">
+                    <label for="input-sensor-dataType">数据类型</label>
+                    <select id="input-sensor-dataType" class="form-control" [(ngModel)]="sensor.realType">
+                      <option>Number</option>
+                      <option>Text</option>
+                      <option>Point</option>
+                      <option>Image</option>
+                      <option>Boolean</option>
+                      <option>Object</option>
+                    </select>
+                    <label for="input-sensor-showType">数据展示方式</label>
+                    <input id="input-sensor-showType" class="form-control" [(ngModel)]="sensor.showType">
+                    <label for="input-sensor-description">传感器描述</label>
+                    <textarea id="input-sensor-description" class="form-control" rows="6"
+                              [(ngModel)]="sensor.description"></textarea>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-primary btn-xs" (click)="edit(sensor)">确定</button>
+                </div>
+              </ng-template>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div id="message">显示第 {{curRecordStart}} 到第 {{curRecordEnd}} 条记录，总共 {{totNum}} 条记录 每页显示 {{limit}} 条记录</div>
+    <ul class="pagination right">
+      <li class="previous"><a href="javascript:void(0)" (click)="goToPre()">&laquo;</a></li>
+      <li *ngFor="let page of pages">
+        <a href="javascript:void(0)" (click)="turnPage(page)">{{page}}</a>
+      </li>
+      <li class="next"><a href="javascript:void(0)" (click)="goToNext()">&raquo;</a></li>
+    </ul>
+  </mk-box-content>
+</mk-box>

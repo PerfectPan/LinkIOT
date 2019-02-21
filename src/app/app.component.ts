@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LayoutService } from 'angular-admin-lte';
+import { DefaultService } from '../api';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,7 @@ export class AppComponent implements OnInit {
   public customLayout: boolean;
 
   constructor(
-    private layoutService: LayoutService
+    private layoutService: LayoutService,
   ) {}
 
   ngOnInit() {

@@ -1,0 +1,103 @@
+<div class="col-lg-3">
+  <mk-box>
+    <mk-box-content>
+      <img class="profile-user-img img-responsive img-circle"
+           src="{{(user.me.avatar==undefined || user.me.avatar==null || user.me.avatar=='')?'assets/img/avatar04.png':user.me.avatar}}">
+      <h3 class="profile-username text-center">{{user.me.nickname}}</h3>
+      <p class="text-muted text-center">{{user.me.username}}</p>
+      <ul class="list-group list-group-unbordered">
+        <li class="list-group-item">
+          <b>权限等级</b>
+          <a class="pull-right">{{user.me['levelStr']}}</a>
+        </li>
+        <li class="list-group-item">
+          <b>加入时间</b>
+          <a class="pull-right">{{user.me.createTime}}</a>
+        </li>
+        <li class="list-group-item">
+          <b>已创建的设备</b>
+          <a class="pull-right" href="/#/device">{{user.me.createdDeviceNumber}}</a>
+        </li>
+
+      </ul>
+    </mk-box-content>
+
+  </mk-box>
+</div>
+<div class="col-lg-9">
+  <mk-box [isRemovable]="false">
+    <mk-box-header>编辑信息</mk-box-header>
+    <mk-box-content>
+      <div class="form-group">
+        <label for="edit-email-input">用户名</label>
+        <input id="edit-email-input" class="form-control" type="text" [value]="user.me.username" disabled>
+      </div>
+      <div class="form-group">
+        <label for="edit-nickname-input">昵称</label>
+        <input id="edit-nickname-input" class="form-control" type="text" [value]="user.me.nickname" #nickname>
+      </div>
+      <div class="form-group">
+        <label for="edit-phone-input">手机号</label>
+        <input id="edit-phone-input" class="form-control" type="text" [value]="user.me.phone" #phone>
+      </div>
+    </mk-box-content>
+    <mk-box-footer>
+      <button class="btn btn-primary" (click)="editMe(nickname.value,phone.value)">确定</button>
+    </mk-box-footer>
+  </mk-box>
+</div>
+<div class="col-lg-12">
+  <mk-box [isRemovable]="false" *ngIf="user.me.level<2">
+    <mk-box-header>
+      <button class="btn btn-success" (click)="add()">添加用户</button>
+    </mk-box-header>
+    <mk-box-content>
+      <div class="col-lg-12">
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+            <tr>
+              <th><input type="checkbox"></th>
+              <th>用户名</th>
+              <th>密码</th>
+              <th>权限等级</th>
+              <th>昵称</th>
+              <th>手机号</th>
+              <th>创建时间</th>
+              <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let child of children">
+              <td><input type="checkbox"></td>
+              <td>{{child.username}}</td>
+              <td>{{child.password}}</td>
+              <td>{{child['levelStr']}}</td>
+              <td>{{child.nickname}}</td>
+              <td>{{child.phone}}</td>
+              <td>{{child.createTime}}</td>
+              <td>
+                <div class="btn-toolbar" style="display: flex">
+                  <button class="btn btn-primary btn-xs" (click)="editChild(child)">编辑</button>
+                  <button class="btn btn-danger btn-xs" (click)="deleteChild(child)">删除</button>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-lg-12">
+        <div class="form-inline">
+          <div class="form-group pull-right">
+            <input class="form-control" type="button" value="上一页" [disabled]="page==1" (click)="goto(page-1)">
+            <input class="form-control" style="width: 60px" type="text" [value]="page" #gotoPage>
+            <span>{{' /'+maxPage+' '}}</span>
+            <input class="form-control" type="button" value="前往" (click)="goto(gotoPage.value)">
+            <input class="form-control" type="button" value="下一页" (click)="goto(page+1)">
+          </div>
+        </div>
+      </div>
+    </mk-box-content>
+  </mk-box>
+</div>

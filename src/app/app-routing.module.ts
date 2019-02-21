@@ -1,145 +1,67 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { HomeComponent } from './home/home.component';
+import { UserComponent } from './user/user.component';
+import { DeviceComponent } from './device/device.component';
+import { SensorComponent } from './sensor/sensor.component';
+import { DataAnalyseComponent } from './data-analyse/data-analyse.component';
+import { AlarmLogComponent } from './alarm-log/alarm-log.component'
+import { DataComponent } from './data/data.component';
 
 const routes: Routes = [
   {
-  path: '',
-  data: {
-      title: 'Get Started'
+    path:'',
+    redirectTo: 'login',
+    pathMatch: 'full'
   },
-  children: [
-    {
-      path: '',
-      component: HomeComponent
-    }, {
-      path: 'accordion',
-      loadChildren: './+accordion/accordion.module#AccordionModule',
-      data: {
-        title: 'Accordion'
-      }
-    }, {
-      path: 'alert',
-      loadChildren: './+alert/alert.module#AlertModule',
-      data: {
-        title: 'Alert',
-      }
-    }, {
-      path: 'layout',
-      data: {
-        title: 'Layout',
-      },
-      children: [
-        {
-          path: 'configuration',
-          loadChildren: './+layout/configuration/configuration.module#ConfigurationModule',
-          data: {
-            title: 'Configuration'
-          }
-        }, {
-          path: 'custom',
-          loadChildren: './+layout/custom/custom.module#CustomModule',
-          data: {
-            title: 'Disable Layout'
-            // disableLayout: true
-          }
-        }, {
-          path: 'content',
-          loadChildren: './+layout/content/content.module#ContentModule',
-          data: {
-            title: 'Content'
-          }
-        }, {
-          path: 'header',
-          loadChildren: './+layout/header/header.module#HeaderModule',
-          data: {
-            title: 'Header'
-          }
-        }, {
-          path: 'sidebar-left',
-          loadChildren: './+layout/sidebar-left/sidebar-left.module#SidebarLeftModule',
-          data: {
-            title: 'Sidebar Left'
-          }
-        }, {
-          path: 'sidebar-right',
-          loadChildren: './+layout/sidebar-right/sidebar-right.module#SidebarRightModule',
-          data: {
-            title: 'Sidebar Right'
-          }
-        },
-      ]
-    }, {
-      path: 'boxs',
-      data: {
-        title: 'Boxs',
-      },
-      children: [
-        {
-          path: 'box',
-          loadChildren: './+boxs/box-default/box-default.module#BoxDefaultModule',
-          data: {
-            title: 'Box'
-          }
-        }, {
-          path: 'info-box',
-          loadChildren: './+boxs/box-info/box-info.module#BoxInfoModule',
-          data: {
-            title: 'Info Box'
-          }
-        }, {
-          path: 'small-box',
-          loadChildren: './+boxs/box-small/box-small.module#BoxSmallModule',
-          data: {
-            title: 'Small Box'
-          }
-        }
-      ]}, {
-        path: 'dropdown',
-        loadChildren: './+dropdown/dropdown.module#DropdownModule',
-        data: {
-          title: 'Dropdown',
-        }
-      }, {
-        path: 'tabs',
-        loadChildren: './+tabs/tabs.module#TabsModule',
-        data: {
-          title: 'Tabs',
-        }
-      }
-    ]
-  }, {
-    path: 'form',
+  {
+    path: 'user',
     data: {
-      title: 'Form',
+      title: '账户管理'
     },
-    children: [
-      {
-        path: 'input-text',
-        loadChildren: './+form/input-text/input-text.module#InputTextModule',
-        data: {
-          title: 'Input Text',
-        }
-      }
-    ]
+    component: UserComponent
+  }, {
+    path: 'device',
+    data: {
+      title: '设备管理'
+    },
+    component: DeviceComponent
+  }, {
+    path: 'sensor/:deviceId',
+    data: {
+      title: '传感器管理'
+    },
+    component: SensorComponent
+  }, {
+    path: 'data-analyse',
+    data: {
+      title: '数据分析'
+    },
+    component: DataAnalyseComponent
+  }, {
+    path: 'alarm-log',
+    data: {
+      title: '报警历史'
+    },
+    component: AlarmLogComponent
+  },{
+    path: 'data/:deviceId/:sensorId/:dataType',
+    data: {
+      title: '查看数据'
+    },
+    component: DataComponent
   }, {
     path: 'login',
-    loadChildren: './+login/login.module#LoginModule',
+    loadChildren: './login/login.module#LoginModule',
     data: {
       customLayout: true
     }
-  }, {
-    path: 'register',
-    loadChildren: './+register/register.module#RegisterModule',
-    data: {
-      customLayout: true
-    }
-  },
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

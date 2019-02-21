@@ -1,0 +1,72 @@
+<mk-box [isRemovable]="false">
+    <mk-box-header>
+        <div class="btn-toolbar">
+            <button class="btn btn-success" (click)="open()">添加设备</button>
+            <button class="btn btn-danger" (click)="delete()">删除设备</button>
+        </div>
+    </mk-box-header>
+    <mk-box-content>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr id="header">
+                        <th><input type="checkbox" [(ngModel)]="checked" (change)="selectAll()"></th>
+                        <th>设备名称</th>
+                        <th>设备ID</th>
+                        <th>设备秘钥</th>
+                        <th>设备状态</th>
+                        <th>上次登录时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="devices.length==0">
+                        <td colspan="7">没有找到相关信息...</td>
+                    </tr>
+                    <tr *ngFor="let device of devices">
+                        <td><input type="checkbox" [(ngModel)]="device.status" (change)="check(device.status)"></td>
+                        <td>{{device.name}}</td>
+                        <td>{{device.deviceId}}</td>
+                        <td>{{device.secret}}</td>
+                        <td>{{device.state==0?'离线':'在线'}}</td>
+                        <td>{{device.lastLoginTime==null?'从未登录':device.lastLoginTime}}</td>
+                        <td>
+                            <div class="btn-toolbar" style="display: flex">
+                                <button class="btn btn-danger btn-xs">报警设置</button>
+                                <button class="btn btn-primary btn-xs" (click)="gotoSensors(device.deviceId)">传感器管理</button>
+                                <button class="btn btn-success btn-xs" (click)="openModal(template)">编辑</button>
+                                <ng-template #template>
+                                    <div class="modal-header">
+                                        <h4 class="modal-title pull-left">编辑设备</h4>
+                                        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label for="input-device-name">设备名称</label>
+                                            <input id="input-device-name" type="text" class="form-control" [(ngModel)]="device.name">
+                                            <label for="input-device-description">设备描述</label>
+                                            <textarea id="input-device-description" class="form-control" rows="4" [(ngModel)]="device.description"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-primary" (click)="edit(device)">确定</button>
+                                    </div>
+                                </ng-template>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="message">显示第 {{curRecordStart}} 到第 {{curRecordEnd}} 条记录，总共 {{totNum}} 条记录 每页显示 {{limit}} 条记录</div>
+        <ul class="pagination right">
+            <li class="previous"><a href="javascript:void(0)" (click)="goToPre()">&laquo;</a></li>
+            <li *ngFor="let page of pages">
+                <a href="javascript:void(0)" (click)="turnPage(page)">{{page}}</a>
+            </li>
+            <li class="next"><a href="javascript:void(0)" (click)="goToNext()">&raquo;</a></li>
+        </ul>
+    </mk-box-content>
+</mk-box>
